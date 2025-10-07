@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Добрыня — предпросмотр</title>
+  <meta name="description" content="Расчёт и монтаж вентилируемых фасадов. Москва и МО." />
+  <style>
+    :root{
+      --background:#F7F3EE; --foreground:#1F1B16; --gold:#C8A96A; --bronze:#7A5C2E; --accent:#B68A2C;
+      --radius-md:12px; --radius-lg:16px; --shadow:0 6px 24px rgba(0,0,0,.08);
+    }
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--background);color:var(--foreground);font:16px/1.5 Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol"}
+    .container{max-width:1200px;margin:0 auto;padding:0 16px}
+    header{position:sticky;top:0;z-index:10;background:color-mix(in oklch,var(--background),transparent 20%);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid rgba(0,0,0,.06)}
+    header .bar{display:flex;gap:16px;align-items:center;padding:12px 0}
+    nav{margin-left:auto;display:none;gap:16px}
+    @media (min-width:768px){nav{display:flex}}
+    a{text-decoration:none;color:inherit}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;font-weight:700;border-radius:var(--radius-md);border:1px solid rgba(0,0,0,.08)}
+    .btn-primary{background:var(--gold)}
+    .card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow)}
+    .grid{display:grid;gap:24px}
+    .hero{grid-template-columns:1fr}
+    @media (min-width:768px){.hero{grid-template-columns:1fr 1fr}}
+    .aspect-43{position:relative;padding-top:75%}
+    .aspect-43 img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:var(--radius-lg)}
+    h1{font-size:40px;line-height:1.1;margin:0}
+    h2{font-size:28px;margin:0 0 16px}
+    h3{font-size:18px;margin:0 0 8px}
+    section{padding:48px 0}
+    .pill{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;background:var(--gold);font-size:12px;font-weight:800}
+    .list{list-style:disc;padding-left:20px}
+    .gallery{grid-template-columns:1fr}
+    @media (min-width:640px){.gallery{grid-template-columns:repeat(2,1fr)}}
+    @media (min-width:1024px){.gallery{grid-template-columns:repeat(3,1fr)}}
+    figure{margin:0;overflow:hidden}
+    figcaption{padding:12px;font-size:14px;opacity:.8}
+    details{cursor:pointer}
+    .field{display:block;width:100%;padding:8px 12px;border-radius:12px;border:1px solid rgba(0,0,0,.1);background:#fff}
+    footer{border-top:1px solid rgba(0,0,0,.06)}
+    .row{display:grid;gap:16px}
+    @media (min-width:640px){.row{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container bar">
+      <a href="#home" class="brand" aria-label="На главную" style="display:flex;align-items:center;gap:12px">
+        <img src="public/img/dobrynya_logo.png" alt="Добрыня" width="32" height="32" />
+        <strong>Добрыня</strong>
+      </a>
+      <nav aria-label="Навигация">
+        <a href="#materials">Материалы</a>
+        <a href="#benefits">Преимущества</a>
+        <a href="#trust">Почему доверяют</a>
+        <a href="#projects">Объекты</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#faq">FAQ</a>
+        <a href="#calc">Калькулятор</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+      <div style="margin-left:auto;display:flex;gap:8px">
+        <a href="tel:+74957778899" class="btn">+7 (495) 777-88-99</a>
+        <a href="https://wa.me/?text=Здравствуйте! Хочу рассчитать фасад." target="_blank" class="btn btn-primary">WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="home" class="container">
+    <section class="grid hero" style="align-items:center">
+      <div>
+        <h1>Вентилируемые фасады под ключ</h1>
+        <p style="margin-top:12px;font-size:18px;opacity:.85">Москва и МО, выезд инженера — 24 часа. Расчёт сметы и подбор материалов под ваш проект.</p>
+        <div style="margin-top:16px;display:flex;gap:12px">
+          <a href="#calc" class="btn btn-primary">Рассчитать стоимость</a>
+          <a href="tel:+74957778899" class="btn">Позвонить</a>
+        </div>
+      </div>
+      <div class="card aspect-43">
+        <img src="public/img/hero.png" alt="Современный фасад" />
+      </div>
+    </section>
+
+    <section id="materials">
+      <h2>Материалы</h2>
+      <div id="materialsGrid" class="grid" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr))"></div>
+    </section>
+
+    <section id="benefits" class="grid row">
+      <div class="card" style="padding:16px">
+        <h3>Наши преимущества</h3>
+        <ul class="list">
+          <li>Собственные бригады и инженерный контроль</li>
+          <li>Чистые швы и скрытый крепёж</li>
+          <li>Работаем по договору и смете</li>
+          <li>Гарантия и сервисное обслуживание</li>
+        </ul>
+      </div>
+      <div class="card" style="padding:16px">
+        <h3>Почему нам доверяют</h3>
+        <ul class="list">
+          <li>Опыт в коммерческих и частных проектах</li>
+          <li>Сроки под ключ без простоев</li>
+          <li>Прозрачная смета и закупки</li>
+          <li>Рекомендуют клиенты</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>Наши объекты</h2>
+      <div class="grid gallery">
+        <figure class="card"><div class="aspect-43"><img src="public/img/5370942984486517101.jpg" alt="Объект 1" /></div><figcaption>Современный фасад — объект #1</figcaption></figure>
+        <figure class="card"><div class="aspect-43"><img src="public/img/5370942984486517102.jpg" alt="Объект 2" /></div><figcaption>Современный фасад — объект #2</figcaption></figure>
+        <figure class="card"><div class="aspect-43"><img src="public/img/5370942984486517104.jpg" alt="Объект 3" /></div><figcaption>Современный фасад — объект #3</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="reviews">
+      <h2>Отзывы</h2>
+      <div class="grid row">
+        <blockquote class="card" style="padding:16px">“Отличная команда, сроки соблюдены”<footer style="opacity:.7;margin-top:8px">— Клиент</footer></blockquote>
+        <blockquote class="card" style="padding:16px">“Качественно, рекомендую”<footer style="opacity:.7;margin-top:8px">— Клиент</footer></blockquote>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>FAQ</h2>
+      <details class="card" style="padding:16px;margin-bottom:12px"><summary style="font-weight:600">Сколько занимает монтаж?</summary><p style="margin-top:8px;opacity:.8">В среднем 2–6 недель в зависимости от площади и материала.</p></details>
+      <details class="card" style="padding:16px"><summary style="font-weight:600">Какие гарантии?</summary><p style="margin-top:8px;opacity:.8">Гарантия по договору, сервисное обслуживание по заявке.</p></details>
+    </section>
+
+    <section id="calc">
+      <h2>Калькулятор стоимости</h2>
+      <div class="grid row">
+        <div class="card" style="padding:16px">
+          <label class="block">Материал</label>
+          <select id="material" class="field" aria-label="Выбор материала"></select>
+
+          <label class="block" style="margin-top:12px">Площадь (м²)</label>
+          <input id="area" type="number" min="10" step="1" value="100" class="field" aria-label="Площадь" />
+
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+            <div>
+              <label class="block">Слои утепления</label>
+              <select id="layers" class="field" aria-label="Слои">
+                <option value="1">1 слой</option>
+                <option value="2">2 слоя (+20%)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block">Толщина</label>
+              <select id="thickness" class="field" aria-label="Толщина">
+                <option value="50">50 мм</option>
+                <option value="100">100 мм (+10%)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:16px">
+          <div style="opacity:.7">Цена за м²</div>
+          <div id="pp" style="font-size:28px;font-weight:800">—</div>
+          <div style="opacity:.7;margin-top:12px">Итого</div>
+          <div id="total" style="font-size:28px;font-weight:800">—</div>
+          <div style="font-size:12px;opacity:.7;margin-top:8px">Цены ориентировочные (работа + подсистема), итог зависит от проекта.</div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:16px;margin-top:16px">
+        <form id="lead" class="grid row" aria-label="Форма заявки">
+          <div>
+            <label class="block" for="name">Имя</label>
+            <input id="name" name="name" class="field" required placeholder="Как к вам обращаться" />
+          </div>
+          <div>
+            <label class="block" for="phone">Телефон</label>
+            <input id="phone" name="phone" class="field" required type="tel" placeholder="+7 (___) ___-__-__" pattern="^\+7\s?\(?\d{3}\)?\s?\d{3}\-?\d{2}\-?\d{2}$" />
+          </div>
+          <div style="grid-column:1/-1">
+            <label class="block" for="comment">Комментарий</label>
+            <textarea id="comment" name="comment" rows="3" class="field" placeholder="Коротко опишите задачу"></textarea>
+          </div>
+          <div style="grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-primary" type="submit">Отправить в WhatsApp</button>
+            <a id="shareTg" class="btn" target="_blank" rel="noopener">Отправить в Telegram</a>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contacts">
+    <div class="container" style="padding:24px 0;display:grid;gap:16px;grid-template-columns:1fr;align-items:start">
+      <div style="display:flex;align-items:center;gap:12px">
+        <img src="public/img/dobrynya_icon.png" alt="Добрыня" width="28" height="28" />
+        <strong>Добрыня</strong>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <a href="tel:+74957778899">+7 (495) 777-88-99</a>
+        <a href="mailto:info@dobrynya-stroy.online">info@dobrynya-stroy.online</a>
+      </div>
+      <a href="privacy-policy.html" style="opacity:.7">Политика конфиденциальности</a>
+    </div>
+  </footer>
+
+  <script>
+    const pricingMap = {
+      "Металлокассеты":2590,
+      "Композит (АКП)":3890,
+      "HPL панели":3490,
+      "Керамогранит/плитка/клинкер":2290,
+      "Клинкер":2790,
+      "Профнастил":1790,
+      "Краспан":2800,
+      "Камень (натур/искусственный)":3500,
+      "Дерево / WPC":2400,
+      "ПВХ-панели":1600,
+      "Сэндвич-панели":2400
+    };
+    const fmt = n => n.toLocaleString('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:0});
+
+    const materialsGrid = document.getElementById('materialsGrid');
+    const materialSelect = document.getElementById('material');
+    const areaInput = document.getElementById('area');
+    const layersSelect = document.getElementById('layers');
+    const thicknessSelect = document.getElementById('thickness');
+    const pp = document.getElementById('pp');
+    const total = document.getElementById('total');
+
+    const keys = Object.keys(pricingMap);
+    keys.forEach(k=>{
+      const opt=document.createElement('option');opt.value=k;opt.textContent=k;materialSelect.appendChild(opt);
+      const card=document.createElement('button');
+      card.className='card';
+      card.style.padding='16px';
+      card.style.textAlign='left';
+      card.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div style="font-weight:600">${k}</div><div style="font-size:14px;opacity:.7">Ориентировочно: ${fmt(pricingMap[k])}/м²</div></div>
+        <span class="pill">от ${fmt(pricingMap[k])}</span>
+      </div>`;
+      card.addEventListener('click',()=>{ materialSelect.value=k; update(); window.location.hash='calc'; });
+      materialsGrid.appendChild(card);
+    });
+    materialSelect.value = keys[0];
+
+    function calcPricePerM2(){
+      let price = pricingMap[materialSelect.value];
+      if(Number(layersSelect.value)===2) price *= 1.2;
+      if(Number(thicknessSelect.value)===100) price *= 1.1;
+      return Math.round(price);
+    }
+    function update(){
+      const ppm2 = calcPricePerM2();
+      pp.textContent = fmt(ppm2);
+      total.textContent = fmt(Math.round(ppm2 * Number(areaInput.value||0)));
+      const shareText = encodeURIComponent(
+        `Заявка на расчёт фасада\nМатериал: ${materialSelect.value}\nПлощадь: ${areaInput.value} м²\nСлои утепления: ${layersSelect.value}\nТолщина: ${thicknessSelect.value} мм\nЦена: ${total.textContent}`
+      );
+      document.getElementById('shareTg').href = `https://t.me/share/url?url=${encodeURIComponent('https://dobrynya-stroy.online')}&text=${shareText}`;
+    }
+    materialSelect.addEventListener('change',update);
+    areaInput.addEventListener('input',update);
+    layersSelect.addEventListener('change',update);
+    thicknessSelect.addEventListener('change',update);
+    update();
+
+    document.getElementById('lead').addEventListener('submit',e=>{
+      e.preventDefault();
+      const data = new FormData(e.currentTarget);
+      const msg = `Заявка на расчёт фасада\nИмя: ${data.get('name')}\nТелефон: ${data.get('phone')}\nПлощадь: ${areaInput.value} м²\nМатериал: ${materialSelect.value}\nСлои: ${layersSelect.value}\nТолщина: ${thicknessSelect.value} мм\nКомментарий: ${data.get('comment')||'-'}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
+    });
+  </script>
+</body>
+</html>
