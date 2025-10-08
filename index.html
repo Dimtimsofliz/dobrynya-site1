@@ -1,553 +1,539 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Добрыня — Фасады под ключ</title>
-  <link rel="icon" href="dobrynya_icon.png" type="image/png" />
-  <style>
-    :root {
-      --bg: #121212;          /* глубокий графит */
-      --bg-2: #1a1a1a;        /* тёмные секции */
-      --text: #ffffff;         /* основной текст */
-      --muted: #cfcfcf;        /* вторичный текст */
-      --gold: #ffd700;         /* акцент */
-      --burgundy: #7b1f1f;     /* доп. акцент */
-      --card: #151515;         /* фон карточек */
-      --stroke: rgba(255, 215, 0, 0.35);
-      --radius: 16px;
-      --shadow: 0 8px 30px rgba(0,0,0,0.35);
-    }
-
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text);
-      background: var(--bg);
-      line-height: 1.6;
-      scroll-behavior: smooth;
-    }
-
-    /* ===== Header ===== */
-    header {
-      position: fixed;
-      inset: 0 0 auto 0;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.75), rgba(0,0,0,0));
-      backdrop-filter: saturate(120%) blur(6px);
-      transition: background .25s ease, box-shadow .25s ease;
-    }
-    header.is-scrolled {
-      background: #0f0f0f;
-      box-shadow: 0 6px 24px rgba(0,0,0,.35);
-    }
-    .nav {
-      width: min(1200px, 92%);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .brand img {
-      height: 44px;
-      width: auto;
-      /* Lighten the small logo in the header for better contrast */
-      filter: brightness(1.3);
-    }
-    .brand span { font-weight: 800; letter-spacing: .3px; color: var(--gold); font-size: 20px; }
-
-    .menu { display: flex; gap: 18px; align-items: center; }
-    .menu a { color: var(--text); text-decoration: none; font-size: 14.5px; opacity: .9; }
-    .menu a:hover { color: var(--gold); }
-
-    .cta {
-      margin-left: 8px;
-      padding: 10px 16px;
-      border-radius: 999px;
-      border: 1px solid var(--stroke);
-      background: linear-gradient(135deg, var(--gold), #f2c200 60%);
-      color: #141414;
-      font-weight: 700;
-      text-decoration: none;
-      box-shadow: 0 5px 18px rgba(255,215,0,.25);
-      transition: transform .15s ease;
-    }
-    .cta:hover { transform: translateY(-1px); }
-
-    /* ===== Hero ===== */
-    .hero {
-      position: relative;
-      min-height: 95vh;
-      display: grid;
-      place-items: center;
-      padding-top: 72px; /* под шапку */
-      overflow: hidden;
-    }
-    .hero::before {
-      /* Remove the dark overlay behind the hero to make the section lighter */
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: none;
-      pointer-events: none;
-    }
-    .grid-hero {
-      width: min(1200px, 92%);
-      display: grid;
-      gap: 28px;
-      align-items: center;
-      /* Revert to a more balanced split between text and logo columns */
-      grid-template-columns: 1.1fr 0.9fr;
-    }
-
-    .hero-copy h1 { font-size: clamp(28px, 4.2vw, 56px); line-height: 1.05; margin: 0 0 14px; }
-    .hero-copy p { color: var(--muted); margin: 0 0 22px; font-size: clamp(16px, 1.4vw, 19px); }
-
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
-    .btn-primary { composes: cta; }
-    .btn-outline {
-      padding: 10px 16px; border-radius: 999px; border: 1px solid var(--stroke);
-      text-decoration: none; color: var(--text); background: rgba(255,255,255,0.02);
-    }
-
-    .hero-logo {
-      /*
-       * Reintroduce the subtle gradient and padding around the logo to
-       * return to the previous look. The container now acts as a
-       * decorative frame rather than being entirely minimal.
-       */
-      width: 100%;
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, rgba(255,215,0,.08), rgba(123,31,31,.12));
-      border: 1px solid var(--stroke);
-      box-shadow: var(--shadow);
-      padding: clamp(18px, 2vw, 26px);
-      display: grid;
-      place-items: center;
-    }
-    .hero-logo img {
-      /*
-       * Expand the logo horizontally across the hero section.  By
-       * increasing the width well beyond 100% and shifting it left,
-       * the image crosses the centre line and reaches into both
-       * sides of the hero.  The height remains automatic so the
-       * aspect ratio is preserved.  A brightness filter lightens
-       * the drawing on the dark background.
-       */
-      /*
-       * Restore the original sizing: the logo fills the container's
-       * width without exceeding it, and maintains its aspect ratio.
-       * A gentle brightness boost ensures the drawing remains legible
-       * on dark backgrounds.
-       */
-      width: 100%;
-      max-width: 680px;
-      height: auto;
-      display: block;
-      filter: brightness(1.3);
-      position: static;
-    }
-
-    /* ===== Sections ===== */
-    section { padding: 72px 0; position: relative; }
-    .container { width: min(1200px, 92%); margin: 0 auto; }
-    .section-title { text-align: center; margin: 0 0 28px; font-size: clamp(22px, 3vw, 36px); }
-    .section-under { text-align: center; color: var(--muted); margin: 0 auto 36px; max-width: 760px; }
-
-    /* Услуги */
-    .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
-      transition: transform .15s ease, box-shadow .2s ease;
-    }
-    .card:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,.45); }
-    .card h4 { margin: 8px 0 10px; font-size: 18px; }
-    .card p, .card ul { color: var(--muted); margin: 0; }
-    .icon { width: 28px; height: 28px; display: inline-block; vertical-align: middle; }
-
-    /* Преимущества */
-    .advantages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .adv-card {
-      text-align: center;
-      background: var(--card);
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
-    }
-    .adv-card .hex {
-      clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
-      background: linear-gradient(135deg, rgba(255,215,0,.12), rgba(123,31,31,.18));
-      border: 1px solid var(--stroke);
-      width: 56px; height: 56px; display: grid; place-items: center; margin: 0 auto 12px;
-    }
-
-    /* Цены */
-    .pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
-    .price {
-      background: linear-gradient(180deg, rgba(255,215,0,.06), rgba(255,215,0,.02));
-      border: 1px solid var(--stroke);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 22px;
-      text-align: center;
-    }
-    .price h5 { margin: 0 0 4px; font-size: 18px; }
-    .price .val { font-size: 26px; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
-    .price small { color: var(--muted); }
-
-    /* Галерея (CSS Masonry) */
-    .masonry { columns: 3; column-gap: 16px; }
-    .masonry-item { break-inside: avoid; margin-bottom: 16px; background: var(--card); border: 1px solid var(--stroke); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
-    .masonry-item img { width: 100%; height: auto; display: block; }
-    .masonry-item p { margin: 10px 12px 12px; color: var(--muted); font-weight: 600; }
-
-    /* Grid-based gallery: equal sized items */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-    }
-    .projects-grid figure {
-      position: relative;
-      width: 100%;
-      /* Maintain a 4:3 aspect ratio for all project images */
-      padding-bottom: 75%;
-      border: 1px solid var(--stroke);
-      border-radius: 12px;
-      background: var(--card);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .projects-grid figure img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .projects-grid figure p {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      margin: 0;
-      padding: 8px 12px;
-      font-weight: 600;
-      color: var(--muted);
-      background: rgba(0,0,0,0.45);
-    }
-
-    /* Лайтбокс */
-    .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.85); display: none; align-items: center; justify-content: center; z-index: 2000; }
-    .lightbox.open { display: flex; }
-    .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 10px; border: 1px solid var(--stroke); box-shadow: var(--shadow); }
-
-    /* Контакты */
-    .contact-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 18px; }
-    .contact-card { background: var(--card); border: 1px solid var(--stroke); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
-    form { display: grid; gap: 12px; }
-    input, textarea { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--stroke); background: #0f0f0f; color: var(--text); }
-    button { padding: 12px 16px; border-radius: 12px; border: 1px solid var(--stroke); background: linear-gradient(135deg, var(--gold), #f2c200); color: #141414; font-weight: 800; cursor: pointer; }
-    button:hover { filter: brightness(1.02); }
-
-    .map {
-      height: 320px; border-radius: var(--radius); border: 1px solid var(--stroke); background:
-        radial-gradient(600px 200px at 20% 20%, rgba(255,215,0,.08), transparent 60%),
-        radial-gradient(600px 200px at 80% 80%, rgba(123,31,31,.12), transparent 60%),
-        #0f0f0f;
-      display: grid; place-items: center; color: var(--muted);
-    }
-
-    footer { padding: 28px 0; border-top: 1px solid var(--stroke); background: #0f0f0f; text-align: center; color: var(--muted); }
-
-    /* Адаптив */
-    @media (max-width: 1024px) {
-      .cards { grid-template-columns: repeat(3, 1fr); }
-      .pricing { grid-template-columns: 1fr 1fr; }
-      .grid-hero, .contact-grid { grid-template-columns: 1fr; }
-      .masonry { columns: 2; }
-    }
-    @media (max-width: 640px) {
-      header { height: 64px; }
-      .menu { display: none; }
-      .masonry { columns: 1; }
-      .cards { grid-template-columns: 1fr 1fr; }
-      .advantages-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добрыня - Фасады под ключ в Москве и МО</title>
+    <meta name="description" content="Добрыня — монтаж вентилируемых фасадов: металлокассеты, фиброцемент, композит, клинкер и керамогранит. Бесплатный выезд по Москве и МО.">
+    <link rel="icon" href="dobrynya_icon.png" type="image/png">
+    <meta property="og:title" content="Добрыня — Фасады под ключ">
+    <meta property="og:description" content="Профессиональный монтаж вентфасадов. Более 10 лет опыта.">
+    <meta property="og:image" content="dobrynya_logo.png">
+    <meta property="og:type" content="website">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#F7F3EE',
+                        foreground: '#1F1B16',
+                        primary: {
+                            DEFAULT: '#C8A96A',
+                            dark: '#7A5C2E',
+                            light: '#B68A2C',
+                        },
+                        beige: {
+                            50: '#FEFCF9',
+                            100: '#F7F3EE',
+                            200: '#EDE4D8',
+                            300: '#E2D5C4',
+                            400: '#D4C4A8',
+                            500: '#C8A96A',
+                            600: '#B68A2C',
+                            700: '#7A5C2E',
+                            800: '#5A4420',
+                            900: '#3D2E15',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', system-ui, sans-serif; 
+            scroll-behavior: smooth;
+        }
+        .btn-primary { 
+            background: #C8A96A; 
+            color: white; 
+            padding: 12px 24px; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            transition: all 0.2s;
+        }
+        .btn-primary:hover { 
+            background: #7A5C2E; 
+        }
+        .card { 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+            padding: 24px; 
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #F7F3EE 0%, rgba(200, 169, 106, 0.05) 100%);
+        }
+        .logo-container {
+            background: linear-gradient(135deg, #C8A96A 0%, #7A5C2E 100%);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        .dobrynya-logo {
+            background: linear-gradient(135deg, #C8A96A 0%, #7A5C2E 100%);
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+    </style>
 </head>
-<body>
-  <!-- ===== Header ===== -->
-  <header id="siteHeader">
-    <nav class="nav">
-      <a class="brand" href="#hero" aria-label="Добрыня — на главную">
-        <img src="dobrynya_icon.png" alt="Логотип Добрыня" />
-        <span>Добрыня</span>
-      </a>
-      <div class="menu">
-        <a href="#about">О компании</a>
-        <a href="#services">Услуги</a>
-        <a href="#advantages">Преимущества</a>
-        <a href="#pricing">Цены</a>
-        <a href="#projects">Объекты</a>
-        <a href="#contact">Контакты</a>
-        <a class="cta" href="#contact">Заказать расчёт</a>
-      </div>
-    </nav>
-  </header>
+<body class="bg-background text-foreground">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-lg transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between py-4">
+                <div class="flex items-center space-x-3">
+                    <!-- Аватарка - золотая Д -->
+                    <div class="w-12 h-12 logo-container flex items-center justify-center" aria-hidden="true">
+                        <img src="dobrynya_logo.png" alt="Логотип — буква Д" class="relative z-10 w-8 h-8" />
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-foreground">Добрыня</h1>
+                        <p class="text-sm text-beige-600">Фасады под ключ</p>
+                    </div>
+                </div>
+                <nav class="hidden lg:flex items-center space-x-8" aria-label="Главная навигация">
+                    <a href="#about" class="text-foreground hover:text-primary transition-colors">О компании</a>
+                    <a href="#services" class="text-foreground hover:text-primary transition-colors">Услуги</a>
+                    <a href="#prices" class="text-foreground hover:text-primary transition-colors">Цены</a>
+                    <a href="#contacts" class="text-foreground hover:text-primary transition-colors">Контакты</a>
+                </nav>
+                <div class="hidden lg:flex items-center space-x-4">
+                    <a href="tel:+79264401616" class="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                        <span class="font-semibold">+7 (926) 440-16-16</span>
+                    </a>
+                    <a href="#contacts" class="btn-primary">Заказать расчёт</a>
+                </div>
+            </div>
+        </div>
+    </header>
 
-  <!-- ===== Hero ===== -->
-  <section class="hero" id="hero">
-    <div class="grid-hero">
-      <div class="hero-copy">
-        <h1>Фасады под ключ в Москве и МО</h1>
-        <p>Монтаж вентилируемых фасадов: металлокассеты, фиброцемент, композит, клинкерная плитка и керамогранит. Инженерный расчёт, чистые швы, соблюдение сроков и гарантия.</p>
-        <div class="hero-actions">
-          <a class="cta" href="#contact">Рассчитать стоимость</a>
-          <a class="btn-outline" href="#projects">Посмотреть объекты</a>
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center hero-bg pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <div class="space-y-4">
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+                            Фасады под ключ
+                            <span class="text-primary block">в Москве и МО</span>
+                        </h1>
+                        <p class="text-xl text-beige-600 leading-relaxed">
+                            Монтаж вентилируемых фасадов: металлокассеты, фиброцемент, композит, 
+                            клинкерная плитка и керамогранит. Гарантия до 10 лет.
+                        </p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#contacts" class="btn-primary text-lg px-8 py-4">🧮 Рассчитать стоимость</a>
+                        <a href="#projects" class="bg-white text-foreground px-8 py-4 rounded-lg font-semibold hover:bg-beige-50 transition-colors duration-200 shadow-lg border border-beige-200 text-lg">📸 Посмотреть объекты</a>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8">
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                <span class="text-2xl">🏗️</span>
+                            </div>
+                            <h3 class="font-semibold text-foreground mb-1">Более 10 лет опыта</h3>
+                            <p class="text-sm text-beige-600">Свыше 200 проектов</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                <span class="text-2xl">⚡</span>
+                            </div>
+                            <h3 class="font-semibold text-foreground mb-1">Бесплатный выезд</h3>
+                            <p class="text-sm text-beige-600">По Москве и области</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                                <span class="text-2xl">🛡️</span>
+                            </div>
+                            <h3 class="font-semibold text-foreground mb-1">Гарантия до 10 лет</h3>
+                            <p class="text-sm text-beige-600">На все виды работ</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="relative rounded-2xl overflow-hidden shadow-2xl">
+                        <img src="hero.png" alt="Добрыня — мастер-строитель с дрелью на фоне буквы Д" class="w-full h-[500px] object-cover" />
+                    </div>
+                    <!-- Floating Cards -->
+                    <div class="absolute -top-4 -left-4 bg-white rounded-xl shadow-lg p-4 max-w-xs">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                <span class="text-green-600 font-bold">✓</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-foreground">Бесплатный выезд</p>
+                                <p class="text-sm text-beige-600">Замерщика по Москве и МО</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-4 -right-4 bg-white rounded-xl shadow-lg p-4 max-w-xs">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <span class="text-primary font-bold">₽</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-foreground">От 800 ₽/м²</p>
+                                <p class="text-sm text-beige-600">Монтаж фасадных систем</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="hero-logo">
-        <img src="dobrynya_logo.png" alt="Добрыня — логотип и маскот" />
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== About ===== -->
-  <section id="about">
-    <div class="container">
-      <h2 class="section-title">О компании</h2>
-      <p class="section-under">Компания «Добрыня» — подрядчик полного цикла по устройству вентилируемых фасадов. Более 10 лет мы работаем по договору, соблюдая сроки и предоставляя гарантию. Опытные инженеры контролируют весь путь: от проектирования узлов и подсистем до идеальных швов на объекте. Мы реализовали свыше 200 проектов различной сложности, используем современные материалы и технологии, работаем с жилыми домами, коммерческими зданиями и административными сооружениями. В нашей команде специалисты с опытом работы от 5 лет, которые постоянно совершенствуют свои навыки и следят за трендами отрасли.</p>
-    </div>
-  </section>
+    <!-- Projects Section -->
+    <section id="projects" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl sm:text-4xl font-bold text-foreground mb-4">Наши объекты</h2>
+                <p class="text-beige-600">Подборка выполненных фасадов</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <img src="5370942984486517101.jpg" alt="Объект 1" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517102.jpg" alt="Объект 2" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517104.jpg" alt="Объект 3" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517105.jpg" alt="Объект 4" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517106.jpg" alt="Объект 5" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517107.jpg" alt="Объект 6" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517108.jpg" alt="Объект 7" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517109.jpg" alt="Объект 8" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517110.jpg" alt="Объект 9" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517111.jpg" alt="Объект 10" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517112.jpg" alt="Объект 11" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517113.jpg" alt="Объект 12" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517115.jpg" alt="Объект 13" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517116.jpg" alt="Объект 14" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517117.jpg" alt="Объект 15" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517118.jpg" alt="Объект 16" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517119.jpg" alt="Объект 17" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517120.jpg" alt="Объект 18" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517121.jpg" alt="Объект 19" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517122.jpg" alt="Объект 20" class="w-full h-64 object-cover rounded-xl shadow" />
+                <img src="5370942984486517123.jpg" alt="Объект 21" class="w-full h-64 object-cover rounded-xl shadow" />
+            </div>
+        </div>
+    </section>
 
-  <!-- ===== Services ===== -->
-  <section id="services" style="background: var(--bg-2)">
-    <div class="container">
-      <h2 class="section-title">Наши услуги</h2>
-      <div class="cards">
-        <div class="card">
-          <div class="hex"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M3 7h18v10H3z" stroke="currentColor"/></svg></div>
-          <h4>Металлокассеты</h4>
-          <p>Ровная геометрия, скрытый крепёж, устойчивость к погоде.</p>
+    <!-- About Section -->
+    <section id="about" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-foreground mb-6">О компании</h2>
+                    <p class="text-lg text-beige-600 mb-6">
+                        Компания «Добрыня» — подрядчик полного цикла по устройству вентилируемых фасадов. 
+                        Более 10 лет мы работаем по договору, соблюдая сроки и предоставляя гарантию.
+                    </p>
+                    <p class="text-lg text-beige-600 mb-6">
+                        Опытные инженеры контролируют весь путь: от проектирования узлов и подсистем 
+                        до идеальных швов на объекте. Мы реализовали свыше 200 проектов различной сложности.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-primary mb-2">10+</div>
+                            <div class="text-sm text-beige-600">Лет опыта</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-primary mb-2">200+</div>
+                            <div class="text-sm text-beige-600">Проектов</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-primary mb-2">5+</div>
+                            <div class="text-sm text-beige-600">Лет гарантии</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-primary mb-2">24/7</div>
+                            <div class="text-sm text-beige-600">Поддержка</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="w-full h-96 bg-gradient-to-br from-beige-100 to-beige-200 rounded-2xl flex items-center justify-center">
+                        <div class="text-center">
+                            <img src="dobrynya_logo.png" alt="Добрыня — золотая литера Д" class="mx-auto w-24 h-auto mb-4" />
+                            <p class="text-xl font-semibold text-foreground">Профессиональные фасады</p>
+                            <p class="text-beige-600">Любой сложности</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="card">
-          <div class="hex"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v6H4zM4 14h16v6H4z" stroke="currentColor"/></svg></div>
-          <h4>Фиброцемент</h4>
-          <p>Надёжные панели, множество фактур и цветов.</p>
-        </div>
-        <div class="card">
-          <div class="hex"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M3 8l9-5 9 5v8l-9 5-9-5V8z" stroke="currentColor"/></svg></div>
-          <h4>Композит</h4>
-          <p>Лёгкость, пластичность, выразительные фасады.</p>
-        </div>
-        <div class="card">
-          <div class="hex"><svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M3 3h6v6H3zM9 9h6v6H9zM15 15h6v6h-6z" stroke="currentColor"/></svg></div>
-          <h4>Клинкер / Керамогранит</h4>
-          <p>Долговечность и премиальная эстетика.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ===== Advantages ===== -->
-  <section id="advantages">
-    <div class="container">
-      <h2 class="section-title">Преимущества</h2>
-      <div class="advantages-grid">
-        <div class="adv-card">
-          <div class="hex">⚙️</div>
-          <h4>Работа под ключ</h4>
-          <p>Один подрядчик — от расчёта до сдачи объекта.</p>
-        </div>
-        <div class="adv-card">
-          <div class="hex">📐</div>
-          <h4>Инженерный контроль</h4>
-          <p>Точный расчёт и контроль геометрии.</p>
-        </div>
-        <div class="adv-card">
-          <div class="hex">🔧</div>
-          <h4>Качественные материалы</h4>
-          <p>Используем российские и европейские материалы.</p>
-        </div>
-        <div class="adv-card">
-          <div class="hex">🏗️</div>
-          <h4>Опыт и прозрачность</h4>
-          <p>Более 10 лет опыта, прозрачные сметы и реальные сроки.</p>
-        </div>
-        <div class="adv-card">
-          <div class="hex">🔩</div>
-          <h4>Скрытый крепёж</h4>
-          <p>Чистые швы, скрытый крепёж там, где это возможно.</p>
-        </div>
-        <div class="adv-card">
-          <div class="hex">✅</div>
-          <h4>Гарантия</h4>
-          <p>Гарантия на все виды работ.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- Services Section -->
+    <section id="services" class="py-16 px-4 sm:px-6 lg:px-8 bg-beige-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-foreground mb-4">Наши услуги</h2>
+                <p class="text-xl text-beige-600 max-w-3xl mx-auto">
+                    Работаем со всеми современными системами фасадной облицовки
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mb-6" aria-hidden="true">
+                        <span class="text-3xl">🏗️</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground mb-4">Металлокассеты</h3>
+                    <p class="text-beige-600 mb-4">Ровная геометрия, скрытый крепёж, устойчивость к погоде.</p>
+                    <div class="text-primary font-semibold">от 1 200 ₽/м²</div>
+                </div>
 
-  <!-- ===== Pricing ===== -->
-  <section id="pricing" style="background: var(--bg-2)">
-    <div class="container">
-      <h2 class="section-title">Цены</h2>
-      <div class="pricing">
-        <div class="price">
-          <h5>Металлокассеты</h5>
-          <div class="val">от 1 200 ₽/м²</div>
-          <small>Точная цена зависит от сложности и объёмов.</small>
-        </div>
-        <div class="price">
-          <h5>Фиброцементные панели</h5>
-          <div class="val">от 2 250 ₽/м²</div>
-          <small>Цена уточняется по проекту.</small>
-        </div>
-        <div class="price">
-          <h5>Клинкерная плитка</h5>
-          <div class="val">от 2 950 ₽/м²</div>
-          <small>Стоимость зависит от выбранного материала.</small>
-        </div>
-        <div class="price">
-          <h5>Композитные панели</h5>
-          <div class="val">от 5 800 ₽/м²</div>
-          <small>С учётом подсистем и крепежей.</small>
-        </div>
-        <div class="price">
-          <h5>Керамогранит</h5>
-          <div class="val">от 4 800 ₽/м²</div>
-          <small>Цена зависит от марки и формата.</small>
-        </div>
-        <div class="price">
-          <h5>Демонтаж фасада</h5>
-          <div class="val">от 350 ₽/м²</div>
-          <small>В зависимости от объёмов работ.</small>
-        </div>
-        <div class="price">
-          <h5>Подсистема под вентфасад</h5>
-          <div class="val">от 750 ₽/м²</div>
-          <small>Поставляем проверенные подсистемы.</small>
-        </div>
-        <div class="price">
-          <h5>Парапеты и откосы</h5>
-          <div class="val">от 1 800 ₽/п.м.</div>
-          <small>Монтаж с учётом гидроизоляции.</small>
-        </div>
-      </div>
-      <p class="section-under">Стоимость работ уточняется после осмотра и расчёта. Наши специалисты подберут оптимальное решение под ваш проект.</p>
-    </div>
-  </section>
+                <div class="card hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mb-6" aria-hidden="true">
+                        <span class="text-3xl">🔲</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground mb-4">Фиброцемент</h3>
+                    <p class="text-beige-600 mb-4">Надёжные панели, множество фактур и цветов.</p>
+                    <div class="text-primary font-semibold">от 2 250 ₽/м²</div>
+                </div>
 
-  <!-- ===== Projects ===== -->
-  <section id="projects">
-    <div class="container">
-      <h2 class="section-title">Наши объекты</h2>
-      <p class="section-under">Ниже представлены реализованные фасады из различных материалов. Нажмите на изображение, чтобы увеличить его.</p>
-      <div class="projects-grid">
-        <!-- Клинкерная плитка -->
-        <figure><img src="5370942984486517101.jpg" alt="Клинкерная плитка – объект 1" /><p>Клинкерная плитка</p></figure>
-        <figure><img src="5370942984486517102.jpg" alt="Клинкерная плитка – объект 2" /><p>Клинкерная плитка</p></figure>
-        <!-- Металлокассеты -->
-        <figure><img src="5370942984486517104.jpg" alt="Металлокассеты – объект 1" /><p>Металлокассеты</p></figure>
-        <figure><img src="5370942984486517107.jpg" alt="Металлокассеты – объект 2" /><p>Металлокассеты</p></figure>
-        <figure><img src="5370942984486517108.jpg" alt="Металлокассеты – объект 3" /><p>Металлокассеты</p></figure>
-        <figure><img src="5370942984486517109.jpg" alt="Металлокассеты – объект 4" /><p>Металлокассеты</p></figure>
-        <figure><img src="5370942984486517118.jpg" alt="Металлокассеты – объект 5" /><p>Металлокассеты</p></figure>
-        <figure><img src="5370942984486517119.jpg" alt="Металлокассеты – объект 6" /><p>Металлокассеты</p></figure>
-        <figure><img src="5370942984486517120.jpg" alt="Металлокассеты – объект 7" /><p>Металлокассеты</p></figure>
-        <figure><img src="5370942984486517123.jpg" alt="Металлокассеты – объект 8" /><p>Металлокассеты</p></figure>
-        <!-- Композитные панели -->
-        <figure><img src="5370942984486517105.jpg" alt="Композитные панели – объект 1" /><p>Композитные панели</p></figure>
-        <figure><img src="5370942984486517106.jpg" alt="Композитные панели – объект 2" /><p>Композитные панели</p></figure>
-        <figure><img src="5370942984486517115.jpg" alt="Композитные панели – объект 3" /><p>Композитные панели</p></figure>
-        <figure><img src="5370942984486517116.jpg" alt="Композитные панели – объект 4" /><p>Композитные панели</p></figure>
-        <figure><img src="5370942984486517117.jpg" alt="Композитные панели – объект 5" /><p>Композитные панели</p></figure>
-        <figure><img src="5370942984486517121.jpg" alt="Композитные панели – объект 6" /><p>Композитные панели</p></figure>
-        <figure><img src="5370942984486517122.jpg" alt="Композитные панели – объект 7" /><p>Композитные панели</p></figure>
-        <!-- Линейные панели (металл) -->
-        <figure><img src="5370942984486517110.jpg" alt="Линейные панели – объект 1" /><p>Линейные панели</p></figure>
-        <figure><img src="5370942984486517112.jpg" alt="Линейные панели – объект 2" /><p>Линейные панели</p></figure>
-        <figure><img src="5370942984486517113.jpg" alt="Линейные панели – объект 3" /><p>Линейные панели</p></figure>
-        <!-- Керамогранит -->
-        <figure><img src="5370942984486517111.jpg" alt="Керамогранит – объект" /><p>Керамогранит</p></figure>
-      </div>
-    </div>
-  </section>
+                <div class="card hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mb-6" aria-hidden="true">
+                        <span class="text-3xl">🏢</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground mb-4">Композит</h3>
+                    <p class="text-beige-600 mb-4">Лёгкость, пластичность, выразительные фасады.</p>
+                    <div class="text-primary font-semibold">от 5 800 ₽/м²</div>
+                </div>
 
-  <!-- ===== Contact ===== -->
-  <section id="contact" style="background: var(--bg-2)">
-    <div class="container">
-      <h2 class="section-title">Контакты</h2>
-      <div class="contact-grid">
-        <div class="contact-card">
-          <p><strong>E-mail:</strong> dobrunya67@yandex.ru, ipnetesova@yandex.ru</p>
-          <p><strong>Телефоны:</strong> +7 926 440-16-16, +7 915 346-56-50, +7 938 154-64-34</p>
-          <p><strong>Адрес:</strong> Москва, Россия</p>
-          <p><strong>Работа у нас:</strong> хотите присоединиться к нашей команде? Отправляйте резюме на указанные e-mail или звоните по номеру +7 961 236-10-40.</p>
+                <div class="card hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mb-6" aria-hidden="true">
+                        <span class="text-3xl">🧱</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground mb-4">Клинкер / Керамогранит</h3>
+                    <p class="text-beige-600 mb-4">Долговечность и премиальная эстетика.</p>
+                    <div class="text-primary font-semibold">от 2 950 ₽/м²</div>
+                </div>
+
+                <div class="card hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mb-6" aria-hidden="true">
+                        <span class="text-3xl">🏠</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground mb-4">Сайдинг</h3>
+                    <p class="text-beige-600 mb-4">Виниловый и металлический сайдинг для частных домов.</p>
+                    <div class="text-primary font-semibold">от 800 ₽/м²</div>
+                </div>
+
+                <div class="card hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div class="w-16 h-16 bg-primary/10 rounded-lg flex items-center justify-center mb-6" aria-hidden="true">
+                        <span class="text-3xl">🔧</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-foreground mb-4">Ремонт фасадов</h3>
+                    <p class="text-beige-600 mb-4">Ремонт, покраска и восстановление фасадов.</p>
+                    <div class="text-primary font-semibold">от 850 ₽/м²</div>
+                </div>
+            </div>
         </div>
-        <div class="contact-card">
-          <form id="contactForm">
-            <input type="text" name="name" placeholder="Имя" required />
-            <input type="tel" name="phone" placeholder="Телефон" required />
-            <textarea name="message" rows="4" placeholder="Сообщение" required></textarea>
-            <button type="submit">Отправить</button>
-          </form>
+    </section>
+
+    <!-- Prices Section -->
+    <section id="prices" class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-foreground mb-4">Цены</h2>
+                <p class="text-xl text-beige-600 max-w-3xl mx-auto">
+                    Стоимость работ уточняется после осмотра и расчёта
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card text-center">
+                    <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4" aria-hidden="true">
+                        <span class="text-2xl">🏗️</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-foreground mb-2">Металлокассеты</h3>
+                    <div class="text-2xl font-bold text-primary mb-2">от 1 200 ₽/м²</div>
+                    <p class="text-sm text-beige-600">Точная цена зависит от сложности и объёмов.</p>
+                </div>
+
+                <div class="card text-center">
+                    <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4" aria-hidden="true">
+                        <span class="text-2xl">🔲</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-foreground mb-2">Фиброцементные панели</h3>
+                    <div class="text-2xl font-bold text-primary mb-2">от 2 250 ₽/м²</div>
+                    <p class="text-sm text-beige-600">Цена уточняется по проекту.</p>
+                </div>
+
+                <div class="card text-center">
+                    <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4" aria-hidden="true">
+                        <span class="text-2xl">🧱</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-foreground mb-2">Клинкерная плитка</h3>
+                    <div class="text-2xl font-bold text-primary mb-2">от 2 950 ₽/м²</div>
+                    <p class="text-sm text-beige-600">Стоимость зависит от выбранного материала.</p>
+                </div>
+
+                <div class="card text-center">
+                    <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4" aria-hidden="true">
+                        <span class="text-2xl">🏢</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-foreground mb-2">Композитные панели</h3>
+                    <div class="text-2xl font-bold text-primary mb-2">от 5 800 ₽/м²</div>
+                    <p class="text-sm text-beige-600">С учётом подсистем и крепежей.</p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <footer>
-    <p>© 2025 Добрыня. Все права защищены.</p>
-  </footer>
+    <!-- Contacts Section -->
+    <section id="contacts" class="py-16 px-4 см:px-6 lg:px-8 bg-beige-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold text-foreground mb-4">Контакты</h2>
+                <p class="text-xl text-beige-600 max-w-3xl mx-auto">
+                    Свяжитесь с нами для консультации и расчёта стоимости
+                </p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center" aria-hidden="true">
+                                <span class="text-2xl">📞</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-foreground">Телефоны</h3>
+                                <p class="text-beige-600">+7 (926) 440-16-16</p>
+                                <p class="text-beige-600">+7 (915) 346-56-50</p>
+                                <p class="text-beige-600">+7 (938) 154-64-34</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center" aria-hidden="true">
+                                <span class="text-2xl">✉️</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-foreground">Email</h3>
+                                <p class="text-beige-600">dobrunya67@yandex.ru</p>
+                                <p class="text-beige-600">ipnetesova@yandex.ru</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center" aria-hidden="true">
+                                <span class="text-2xl">📍</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-foreground">Адрес</h3>
+                                <p class="text-beige-600">Москва, Россия</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="card">
+                        <h3 class="text-xl font-bold text-foreground mb-6">Оставить заявку</h3>
+                        <form class="space-y-4" id="leadForm">
+                            <div>
+                                <label class="block text-sm font-semibold text-foreground mb-2" for="name">Ваше имя</label>
+                                <input id="name" name="name" type="text" placeholder="Введите ваше имя" required class="w-full px-4 py-3 border border-beige-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-foreground mb-2" for="phone">Телефон</label>
+                                <input id="phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" required class="w-full px-4 py-3 border border-beige-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-foreground mb-2" for="message">Сообщение</label>
+                                <textarea id="message" name="message" placeholder="Опишите ваш проект" rows="4" class="w-full px-4 py-3 border border-beige-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary w-full">Отправить заявку</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Lightbox Script -->
-  <div class="lightbox" id="lightbox">
-    <img src="" alt="Просмотр изображения" />
-  </div>
-  <script>
-  // Scroll header effect
-  window.addEventListener('scroll', () => {
-    const header = document.getElementById('siteHeader');
-    if (window.pageYOffset > 10) {
-      header.classList.add('is-scrolled');
-    } else {
-      header.classList.remove('is-scrolled');
-    }
-  });
-  // Lightbox functionality
-  const lightbox = document.getElementById('lightbox');
-  const lbImg = lightbox.querySelector('img');
-  // Attach lightbox to each image in the projects grid
-  document.querySelectorAll('.projects-grid img').forEach(img => {
-    img.addEventListener('click', evt => {
-      lbImg.src = img.src;
-      lightbox.classList.add('open');
-    });
-  });
-  lightbox.addEventListener('click', () => {
-    lightbox.classList.remove('open');
-    lbImg.src = '';
-  });
-  // Contact form handler
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('Спасибо! Ваше сообщение отправлено.');
-    this.reset();
-  });
-  </script>
+    <!-- Footer -->
+    <footer class="bg-foreground text-white">
+        <div class="max- w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="py-16">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <!-- Аватарка в футере -->
+                            <div class="w-12 h-12 logo-container flex items-center justify-center" aria-hidden="true">
+                                <img src="dobrynya_logo.png" alt="Логотип — буква Д" class="relative z-10 w-8 h-8" />
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold">Добрыня</h3>
+                                <p class="text-gray-400">Фасады под ключ</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 mb-6 max-w-md">
+                            Профессиональные фасады в Москве и Московской области. 
+                            Более 10 лет опыта, свыше 200 проектов, гарантия до 10 лет.
+                        </p>
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-gray-300">📞 +7 (926) 440-16-16</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-gray-300">✉️ dobrunya67@yandex.ru</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <span class="text-gray-300">📍 Москва и МО, выезд замерщика — бесплатно</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Навигация</h4>
+                        <nav class="space-y-3" aria-label="Навигация по сайту">
+                            <a href="#about" class="block text-gray-300 hover:text-white transition-colors">О компании</a>
+                            <a href="#services" class="block text-gray-300 hover:text-white transition-colors">Услуги</a>
+                            <a href="#prices" class="block text-gray-300 hover:text-white transition-colors">Цены</a>
+                            <a href="#contacts" class="block text-gray-300 hover:text-white transition-colors">Контакты</a>
+                        </nav>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">Свяжитесь с нами</h4>
+                        <div class="space-y-4">
+                            <a href="tel:+79264401616" class="flex items-center space-x-2 bg-primary hover:bg-primary-dark text-white px-4 py-3 rounded-lg transition-colors">
+                                <span>📞 Позвонить</span>
+                            </a>
+                            <a href="mailto:dobrunya67@yandex.ru" class="flex items-center space-x-2 bg-beige-600 hover:bg-beige-700 text-white px-4 py-3 rounded-lg transition-colors">
+                                <span>✉️ Написать</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 py-6">
+                <div class="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+                    <div class="text-gray-400 text-sm">© 2025 Добрыня. Все права защищены.</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('bg-white/95', 'backdrop-blur-sm', 'shadow-lg');
+            } else {
+                header.classList.remove('bg-white/95', 'backdrop-blur-sm', 'shadow-lg');
+            }
+        });
+        
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Заявка отправлена! Мы свяжемся с вами в течение 15 минут.');
+            });
+        });
+    </script>
 </body>
 </html>
